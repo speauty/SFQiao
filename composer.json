@@ -1,0 +1,25 @@
+{
+    "name": "speauty/sf-qiao",
+    "description": "顺丰丰桥系统对接PHP版",
+    "type": "library",
+    "require": {
+        "php": "7.3.*",
+        "guzzlehttp/guzzle": "6.3",
+        "ext-libxml": "*",
+        "greencape/xml-converter": "*@dev",
+        "ext-json": "*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "speauty",
+            "email": "speauty@163.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "SFQiao\\": "src/"
+        }
+    }
+}
