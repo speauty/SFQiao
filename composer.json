@@ -6,7 +6,6 @@
         "php": "7.3.*",
         "guzzlehttp/guzzle": "6.3",
         "ext-libxml": "*",
-        "greencape/xml-converter": "*@dev",
         "ext-json": "*"
     },
     "license": "MIT",
