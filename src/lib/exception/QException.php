@@ -2,19 +2,19 @@
 /**
  * Author:  Speauty
  * Email:   speauty@163.com
- * File:    QException.php
+ * File:    Qexception.php
  * Created: 2020-04-09 00:35:23
  */
 declare(strict_types=1);
-namespace SFQiao\Lib\Exception;
+namespace SFQiao\lib\exception;
 use Throwable;
-
+use \Exception;
 
 /**
- * Class QException
- * @package SFQiao\Lib\Exception
+ * Class Qexception
+ * @package SFQiao\lib\exception
  */
-class QException extends \Exception
+class Qexception extends Exception
 {
     private $tagPrefix = 'SFQiao';
 

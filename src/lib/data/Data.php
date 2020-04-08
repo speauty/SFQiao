@@ -7,15 +7,15 @@
  */
 declare(strict_types=1);
 
-namespace SFQiao\Lib\data;
-use SFQiao\Lib\ConstSets;
-use SFQiao\Lib\Tool;
-use SFQiao\Lib\traits\TraitConf;
+namespace SFQiao\lib\data;
+use SFQiao\lib\ConstSets;
+use SFQiao\lib\Tool;
+use SFQiao\lib\traits\TraitConf;
 
 
 /**
  * Class Data
- * @package SFQiao\Lib\data
+ * @package SFQiao\lib\data
  */
 class Data
 {

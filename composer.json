@@ -6,6 +6,7 @@
         "php": "^7.1",
         "guzzlehttp/guzzle": "~6.0",
         "ext-libxml": "*",
+        "ext-simplexml": "*",
         "ext-json": "*"
     },
     "license": "MIT",
@@ -18,9 +19,7 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "SFQiao\\": "src/",
-            "SFQiao\\Lib\\": "src/lib/",
-            "SFQiao\\Lib\\Exception\\": "src/lib/exception"
+            "SFQiao\\": "src/"
         }
     }
 }

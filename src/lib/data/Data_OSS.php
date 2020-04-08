@@ -7,12 +7,12 @@
  */
 declare(strict_types=1);
 
-namespace SFQiao\Lib\data;
+namespace SFQiao\lib\data;
 
 
 /**
  * Class Data_OSS 订单结果查询服务数据模型
- * @package SFQiao\Lib\data
+ * @package SFQiao\lib\data
  */
 class Data_OSS extends Data
 {

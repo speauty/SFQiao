@@ -6,12 +6,12 @@
  * Created: 2020-04-09 00:50:40
  */
 declare(strict_types=1);
-namespace SFQiao\Lib;
+namespace SFQiao\lib;
 
 
 /**
  * Class ConstSets
- * @package SFQiao\Lib
+ * @package SFQiao\lib
  */
 final class ConstSets
 {

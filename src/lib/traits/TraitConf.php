@@ -7,13 +7,13 @@
  */
 declare(strict_types=1);
 
-namespace SFQiao\Lib\traits;
-use \SFQiao\Lib\Conf;
+namespace SFQiao\lib\traits;
+use \SFQiao\lib\Conf;
 
 
 /**
  * Trait TraitConf
- * @package SFQiao\Lib\traits
+ * @package SFQiao\lib\traits
  */
 trait TraitConf
 {

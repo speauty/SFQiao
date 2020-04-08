@@ -6,17 +6,31 @@
  * Created: 2020-04-09 02:06:29
  */
 declare(strict_types=1);
+namespace SFQiao\lib;
 
-namespace SFQiao\Lib;
 
-
+/**
+ * Class Tool
+ * @package SFQiao\lib
+ */
 class Tool
 {
-    static public function getVerifyCode(string $xml, string $checkWord):string
+    /**
+     * 生成验证码
+     * @param string $xmlStr
+     * @param string $checkWord
+     * @return string
+     */
+    static public function getVerifyCode(string $xmlStr, string $checkWord):string
     {
-        return base64_encode(md5($xml . $checkWord, true));
+        return base64_encode(md5($xmlStr . $checkWord, true));
     }
 
+    /**
+     * 递归创建xml主体内容
+     * @param $data
+     * @return string
+     */
     static public function createXmlRecursion($data): string
     {
         $xml = '';
@@ -57,5 +71,16 @@ class Tool
             $xml .= $xmlScope;
         }
         return $xml;
+    }
+
+    /**
+     * xml字符串转数组
+     * @param $xmlStr
+     * @return array|null
+     */
+    static public function convertXml2Arr($xmlStr):?array
+    {
+        libxml_disable_entity_loader(true);
+        return json_decode(json_encode(simplexml_load_string($xmlStr, 'SimpleXMLElement', LIBXML_NOCDATA)), true)?:null;
     }
 }

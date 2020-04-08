@@ -10,7 +10,7 @@ namespace SFQiao;
 use GuzzleHttp\Client;
 
 
-class Qiao
+class QiaoB
 {
     private $customerCode = '';
     private $checkWord = '';
@@ -25,7 +25,7 @@ class Qiao
 
     private function exception(string $msg): void
     {
-        throw new \Exception($msg);
+        throw new \exception($msg);
     }
 
     private function setConf(array $conf)
@@ -129,7 +129,7 @@ class Qiao
     private function convertXml2Arr($xmlStr)
     {
         libxml_disable_entity_loader(true);
-        return json_decode(json_encode(simplexml_load_string($xmlStr, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
+        return json_decode(json_encode(simplexml_load_string($xmlStr, 'SimpleXMLElement', libXML_NOCDATA)), true);
     }
 
     public function getXmlStr(): void
