@@ -89,17 +89,18 @@ $extDat = [
 ];
 //$result = $qiao->quickOrderConfirm('g53425245245234', $extDat);
 //$result = $qiao->quickGetSubOrderNo('g53425245245234', 5);
-$result = $qiao->quickPushOrderState([
-    'orderNo' => 'h4343143123',
-    'orderStateCode' => '40001',
-    'orderStateDesc' => '调度成功,收派员信息',
-    'carrierCode' => 'SF'
-], [
-    'waybillNo' => "SF7444404769390",
-    'empCode' => "845215",
-    'empPhone' => "13888888888",
-    'netCode' => "755A",
-    'lastTime' => "2018-04-16 15:23:24",
-    'bookTime' => "2018-04-16 15:23:24"
-]);
+//$result = $qiao->quickPushOrderState([
+//    'orderNo' => 'h4343143123',
+//    'orderStateCode' => '40001',
+//    'orderStateDesc' => '调度成功,收派员信息',
+//    'carrierCode' => 'SF'
+//], [
+//    'waybillNo' => "SF7444404769390",
+//    'empCode' => "845215",
+//    'empPhone' => "13888888888",
+//    'netCode' => "755A",
+//    'lastTime' => "2018-04-16 15:23:24",
+//    'bookTime' => "2018-04-16 15:23:24"
+//]);
+
 var_dump($result);

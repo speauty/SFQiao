@@ -510,39 +510,4 @@ class Qiao
             return ['state' => false, 'msg' => $result['msg']];
         }
     }
-
-    // 推送订单状态
-    public function quickPushOrderState(array $mustData, ?array $extData = null, string $serviceName = 'OrderService'):array
-    {
-        $mustDataIdx = [
-            'orderNo', 'orderStateCode', 'orderStateDesc', 'carrierCode'
-        ];
-        foreach ($mustDataIdx as $v) {
-            if (!isset($mustData[$v]) || !$mustData[$v]) {
-                $this->exception("the {$v} is empty");
-            }
-        }
-
-        $data = [
-            'orderNo' => $mustData['orderNo'],
-            'waybillNo' => $extData['orderNo']??"",
-            'orderStateCode' => $mustData['orderStateCode'],
-            'orderStateDesc' => $mustData['orderStateDesc'],
-            'empCode' => $extData['empCode']??"",
-            'empPhone' => $extData['empPhone']??"",
-            'netCode' => $extData['netCode']??"",
-            'lastTime' => $extData['lastTime']??"",
-            'bookTime' => $extData['bookTime']??"",
-            'carrierCode' => $mustData['carrierCode']??""
-        ];
-
-        $this->setServiceName($serviceName)->setData($data)->request();
-        $result = $this->getResult(true);
-        if ($result['state']) {
-            $data = $result['data']['OrderResponse']['@attributes'] + ['rls_info' => $result['data']['OrderResponse']['rls_info']['@attributes'] + ['rls_detail' => $result['data']['OrderResponse']['rls_info']['rls_detail']['@attributes']]];
-            return ['state' => true, 'msg' => '', 'data' => $data];
-        } else {
-            return ['state' => false, 'msg' => $result['msg']];
-        }
-    }
 }
