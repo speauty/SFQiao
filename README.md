@@ -114,3 +114,6 @@ $result = $qiao->quickOrderCancel('T00000003');
 </Response>
  */
 ```
+* 跨境件 `跨境件`
+* 订单确认 `quickGetSubOrderNo`
+* 子单号申请 `quickOrderConfirm`
