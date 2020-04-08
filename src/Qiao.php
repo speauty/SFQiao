@@ -345,12 +345,78 @@ class Qiao
     // 跨境件
     public function quickOrderCrossBorder(array $mustData, ?array $extData = null, string $serviceName = 'OrderService'):array
     {
-        $this->exception('暂未开发');
-        return [];
+        $mustDataIdx = [
+            'orderid', 'j_contact', 'j_tel', 'j_shippercode', 'j_address',
+            'd_contact', 'd_tel', 'j_post_code', 'd_deliverycode', 'd_post_code', 'd_address', 'products',
+            'pay_method'
+        ];
+        foreach ($mustDataIdx as $v) {
+            if (!isset($mustData[$v]) || !$mustData[$v]) {
+                $this->exception("the {$v} is empty");
+            }
+        }
+        $data = [
+            'Order' => [
+                'attributes' => [
+                    'orderid' => $mustData['orderid'],
+                    'mailno' => $extData['mailno']??"",
+                    "is_gen_bill_no" => $extData["is_gen_bill_no"]??"",
+                    'j_company' => $extData['j_company']??'顺丰速运',
+                    'j_contact' => $mustData['j_contact'],
+                    'j_tel' => $mustData['j_tel'],
+                    'j_shippercode' => $mustData['j_shippercode'],
+                    'j_country' => $extData['j_country']??"",
+                    'j_province' => $extData['j_province']??"",
+                    'j_city' => $extData['j_city']??"",
+                    'j_county' => $extData['j_county']??"",
+                    'j_address' => $mustData['j_address'],
+                    'j_post_code' => $mustData['j_post_code'],
+                    'd_contact' => $mustData['d_contact'],
+                    'd_tel' => $mustData['d_tel'],
+                    'd_deliverycode' => $mustData['d_deliverycode'],
+                    'd_company' => $extData['d_company']??'顺丰速运',
+                    'd_country' => $extData['d_country']??'',
+                    'd_province' => $extData['d_province']??'',
+                    'd_city' => $extData['d_city']??'',
+                    'd_county' => $extData['d_county']??'',
+                    'd_address' => $mustData['d_address'],
+                    'd_post_code' => $mustData['d_post_code'],
+                    'custid' => $this->cusTid,
+                    'pay_method' => $mustData['pay_method']??'1',
+                    'express_type' => $extData['express_type']??'1',
+                    'remark' => $extData['remark']??"",
+                ],
+                'body' => [
+                    'Cargo' => [
+                        'attributes' => []
+                    ]
+                ]
+            ]
+        ];
+        foreach ($mustData['products'] as $v) {
+            $data['Order']['body']['Cargo']['attributes'][] = [
+                'name' => $v['name']??'',
+                'count' => $v['count']??'',
+                'unit' => $v['unit']??'',
+                'weight' => $v['weight']??'',
+                'amount' => $v['amount']??'',
+                'currency' => $v['currency']??'',
+                'currency' => $v['currency']??'',
+                'source_area' => $v['source_area']??'',
+            ];
+        }
+        $this->setServiceName($serviceName)->setData($data)->request();
+        $result = $this->getResult(true);
+        if ($result['state']) {
+            $data = $result['data']['OrderResponse']['@attributes']+['rls_info' => $result['data']['OrderResponse']['rls_info']['@attributes']+['rls_detail' =>$result['data']['OrderResponse']['rls_info']['rls_detail']['@attributes']]];
+            return ['state' => true, 'msg' => '', 'data' => $data];
+        } else {
+            return ['state' => false,'msg' => $result['msg']];
+        }
     }
 
     // 订单取消
-    public function quickOrderCancel(string $orderId, string $serviceName = 'OrderConfirmService'):array
+    public function quickOrderCancel(string $orderId, ?string $serviceName = 'OrderConfirmService'):array
     {
         if (!$orderId) $this->exception('the orderId is empty');
         $data = [

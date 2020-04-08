@@ -9,9 +9,11 @@ require_once __DIR__.'/../vendor/autoload.php';
 use SFQiao\Qiao;
 
 $conf = [
-    'customer_code' => '',
-    'check_word' => ''
+    'customer_code' => 'QC_jMKZZ',
+    'check_word' => 'vghrEqtPOygkH8x47lFXSVoyHVvU5OBx',
+    'cus_tid' => '7551234567‬'
 ];
+// 7551234567‬
 $result = false;
 $qiao = new Qiao($conf);
 //$result = $qiao->quickRouteRequest('SF7444404156506');
@@ -95,4 +97,5 @@ $extDat = [];
 </Body>
 </Response>
  */
+$result = $qiao->quickOrderCrossBorder($mustData, $extDat);
 var_dump($result);
