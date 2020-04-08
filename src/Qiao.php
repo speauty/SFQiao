@@ -23,16 +23,16 @@ class Qiao
     private $initResponse = '';
     private $cusTid = '';
 
-    private function exception(string $msg):void
+    private function exception(string $msg): void
     {
         throw new \Exception($msg);
     }
 
     private function setConf(array $conf)
     {
-        $this->customerCode = $conf['customer_code']??'';
-        $this->checkWord = $conf['check_word']??'';
-        $this->cusTid = $conf['cus_tid']??'';
+        $this->customerCode = $conf['customer_code'] ?? '';
+        $this->checkWord = $conf['check_word'] ?? '';
+        $this->cusTid = $conf['cus_tid'] ?? '';
         if (isset($conf['request_url']) && $conf['request_url']) $this->requestUrl = $conf['request_url'];
     }
 
@@ -50,12 +50,11 @@ class Qiao
         }
     }
 
-    private function createXmlRecursion($data):string
+    private function createXmlRecursion($data): string
     {
         $xml = '';
-        foreach ($data as $key => $val)
-        {
-            $xmlScope = $key=='body'?'':"<{$key}%s>";
+        foreach ($data as $key => $val) {
+            $xmlScope = $key == 'body' ? '' : "<{$key}%s>";
             if (!is_array($val)) {
                 return "<{$key}>{$val}</{$key}>";
             }
@@ -87,13 +86,13 @@ class Qiao
                     $xmlScope .= $this->createXmlRecursion([$bk => $bv]);
                 }
             }
-            $xmlScope .= $key=='body'?'':"</{$key}>";
+            $xmlScope .= $key == 'body' ? '' : "</{$key}>";
             $xml .= $xmlScope;
         }
         return $xml;
     }
 
-    private function result(\GuzzleHttp\Psr7\Response $response):?array
+    private function result(\GuzzleHttp\Psr7\Response $response): ?array
     {
         $result = [
             'state' => false,
@@ -112,19 +111,19 @@ class Qiao
             return $result;
         }
         if ($bodyContent['Head'] == 'ERR') {
-            $result['msg'] = is_array($bodyContent['ERROR'])?json_encode($bodyContent['ERROR'], JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE):$bodyContent['ERROR'];
+            $result['msg'] = is_array($bodyContent['ERROR']) ? json_encode($bodyContent['ERROR'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : $bodyContent['ERROR'];
             return $result;
         } else {
             $result['state'] = true;
-            $result['data'] = $bodyContent['Body']??null;
+            $result['data'] = $bodyContent['Body'] ?? null;
         }
         return $result;
     }
 
-    private function getVerifyCode():string
+    private function getVerifyCode(): string
     {
         if (!$this->xmlStr) $this->getXmlStr();
-        return base64_encode(md5($this->xmlStr.$this->checkWord, true));
+        return base64_encode(md5($this->xmlStr . $this->checkWord, true));
     }
 
     private function convertXml2Arr($xmlStr)
@@ -133,10 +132,10 @@ class Qiao
         return json_decode(json_encode(simplexml_load_string($xmlStr, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
     }
 
-    public function getXmlStr():void
+    public function getXmlStr(): void
     {
         $this->verifyConf();
-        $xmlHeader = '<Request service="'.$this->serviceName.'" lang="zh-CN"><Head>'.$this->customerCode.'</Head><Body>%s</Body></Request>';
+        $xmlHeader = '<Request service="' . $this->serviceName . '" lang="zh-CN"><Head>' . $this->customerCode . '</Head><Body>%s</Body></Request>';
         $this->xmlStr = sprintf($xmlHeader, $this->createXmlRecursion($this->sourceData));
     }
 
@@ -145,13 +144,13 @@ class Qiao
         $this->setConf($conf);
     }
 
-    public function setServiceName(string $serviceName):self
+    public function setServiceName(string $serviceName): self
     {
         $this->serviceName = $serviceName;
         return $this;
     }
 
-    public function setData(array $data):self
+    public function setData(array $data): self
     {
         $this->sourceData = $data;
         return $this;
@@ -177,7 +176,7 @@ class Qiao
         $this->result = $this->result($result);
     }
 
-    public function getResult(bool $flagOnlyResult = false):array
+    public function getResult(bool $flagOnlyResult = false): array
     {
         if ($flagOnlyResult) return $this->result;
         return [
@@ -188,22 +187,22 @@ class Qiao
     }
 
     // xml字符串解析
-    public function quickParseXml(string $xml):?array
+    public function quickParseXml(string $xml): ?array
     {
-        return $this->convertXml2Arr($xml)?:null;
+        return $this->convertXml2Arr($xml) ?: null;
     }
 
     // 路由查询
-    public function quickRouteRequest(string $mailNo, ?array $extData = null, string $serviceName = 'RouteService'):?array
+    public function quickRouteRequest(string $mailNo, ?array $extData = null, string $serviceName = 'RouteService'): ?array
     {
         if (!$mailNo) $this->exception('the mailNo is empty');
         $data = [
             'RouteRequest' => [
                 'attributes' => [
-                    'tracking_type' => $extData['tracking_type']??'1',
-                    'method_type' => $extData['tracking_type']??'1',
+                    'tracking_type' => $extData['tracking_type'] ?? '1',
+                    'method_type' => $extData['tracking_type'] ?? '1',
                     'tracking_number' => $mailNo,
-                    'check_phoneNo' => $extData['check_phoneNo']??''
+                    'check_phoneNo' => $extData['check_phoneNo'] ?? ''
                 ],
                 'body' => null
             ]
@@ -221,14 +220,14 @@ class Qiao
     }
 
     // 订单结果查询
-    public function quickOrderSearch(string $orderId, ?array $extData = null, string $serviceName = 'OrderSearchService'):?array
+    public function quickOrderSearch(string $orderId, ?array $extData = null, string $serviceName = 'OrderSearchService'): ?array
     {
         if (!$orderId) $this->exception('the orderId is empty');
         $data = [
             'OrderSearch' => [
                 'attributes' => [
                     'orderid' => $orderId,
-                    'search_type' => $extData['search_type']??'1'
+                    'search_type' => $extData['search_type'] ?? '1'
                 ],
                 'body' => null
             ]
@@ -243,14 +242,14 @@ class Qiao
     }
 
     // 订单筛选
-    public function quickOrderFilterService(string $address, ?array $extData = null, string $serviceName = 'OrderFilterService'):?array
+    public function quickOrderFilterService(string $address, ?array $extData = null, string $serviceName = 'OrderFilterService'): ?array
     {
         if (!$address) $this->exception('the address is empty');
         $data = [
             'OrderFilter' => [
                 'attributes' => [
-                    'filter_type' => $extData['filter_type']??'1',
-                    'orderid' => $extData['orderid']??"",
+                    'filter_type' => $extData['filter_type'] ?? '1',
+                    'orderid' => $extData['orderid'] ?? "",
                     'd_address' => $address
                 ],
                 'body' => null
@@ -281,7 +280,7 @@ class Qiao
                     3 => '其它原因'
                 ];
                 return ['state' => false, 'msg' => '不可以收派', 'data' => [
-                    'msg_more' => $remarkMap[$remark]??'未知原因'
+                    'msg_more' => $remarkMap[$remark] ?? '未知原因'
                 ]];
             }
         } else {
@@ -290,7 +289,7 @@ class Qiao
     }
 
     // 中国大陆件
-    public function quickOrderMainland(array $mustData, ?array $extData = null, string $serviceName = 'OrderService'):?array
+    public function quickOrderMainland(array $mustData, ?array $extData = null, string $serviceName = 'OrderService'): ?array
     {
         $mustDataIdx = [
             'orderid', 'j_contact', 'j_tel', 'j_address',
@@ -305,19 +304,19 @@ class Qiao
             'Order' => [
                 'attributes' => [
                     'orderid' => $mustData['orderid'],
-                    'mailno' => $extData['mailno']??"",
-                    'j_company' => $extData['j_company']??'顺丰速运',
+                    'mailno' => $extData['mailno'] ?? "",
+                    'j_company' => $extData['j_company'] ?? '顺丰速运',
                     'j_contact' => $mustData['j_contact'],
                     'j_tel' => $mustData['j_tel'],
                     'j_address' => $mustData['j_address'],
                     'd_contact' => $mustData['d_contact'],
                     'd_tel' => $mustData['d_tel'],
-                    'd_company' => $extData['d_company']??'顺丰速运',
+                    'd_company' => $extData['d_company'] ?? '顺丰速运',
                     'd_address' => $mustData['d_address'],
                     'custid' => $this->cusTid,
-                    'pay_method' => $extData['pay_method']??'1',
-                    'express_type' => $extData['express_type']??'1',
-                    'remark' => $extData['remark']??"",
+                    'pay_method' => $extData['pay_method'] ?? '1',
+                    'express_type' => $extData['express_type'] ?? '1',
+                    'remark' => $extData['remark'] ?? "",
                 ],
                 'body' => [
                     'Cargo' => [
@@ -328,22 +327,22 @@ class Qiao
         ];
         foreach ($mustData['products'] as $v) {
             $data['Order']['body']['Cargo']['attributes'][] = [
-                'name' => $v['name']??'',
-                'count' => $v['count']??''
+                'name' => $v['name'] ?? '',
+                'count' => $v['count'] ?? ''
             ];
         }
         $this->setServiceName($serviceName)->setData($data)->request();
         $result = $this->getResult(true);
         if ($result['state']) {
-            $data = $result['data']['OrderResponse']['@attributes']+['rls_info' => $result['data']['OrderResponse']['rls_info']['@attributes']+['rls_detail' =>$result['data']['OrderResponse']['rls_info']['rls_detail']['@attributes']]];
+            $data = $result['data']['OrderResponse']['@attributes'] + ['rls_info' => $result['data']['OrderResponse']['rls_info']['@attributes'] + ['rls_detail' => $result['data']['OrderResponse']['rls_info']['rls_detail']['@attributes']]];
             return ['state' => true, 'msg' => '', 'data' => $data];
         } else {
-            return ['state' => false,'msg' => $result['msg']];
+            return ['state' => false, 'msg' => $result['msg']];
         }
     }
 
     // 跨境件
-    public function quickOrderCrossBorder(array $mustData, ?array $extData = null, string $serviceName = 'OrderService'):array
+    public function quickOrderCrossBorder(array $mustData, ?array $extData = null, string $serviceName = 'OrderService'): array
     {
         $mustDataIdx = [
             'orderid', 'j_contact', 'j_tel', 'j_shippercode', 'j_address',
@@ -359,32 +358,32 @@ class Qiao
             'Order' => [
                 'attributes' => [
                     'orderid' => $mustData['orderid'],
-                    'mailno' => $extData['mailno']??"",
-                    "is_gen_bill_no" => $extData["is_gen_bill_no"]??"",
-                    'j_company' => $extData['j_company']??'顺丰速运',
+                    'mailno' => $extData['mailno'] ?? "",
+                    "is_gen_bill_no" => $extData["is_gen_bill_no"] ?? "",
+                    'j_company' => $extData['j_company'] ?? '顺丰速运',
                     'j_contact' => $mustData['j_contact'],
                     'j_tel' => $mustData['j_tel'],
                     'j_shippercode' => $mustData['j_shippercode'],
-                    'j_country' => $extData['j_country']??"",
-                    'j_province' => $extData['j_province']??"",
-                    'j_city' => $extData['j_city']??"",
-                    'j_county' => $extData['j_county']??"",
+                    'j_country' => $extData['j_country'] ?? "",
+                    'j_province' => $extData['j_province'] ?? "",
+                    'j_city' => $extData['j_city'] ?? "",
+                    'j_county' => $extData['j_county'] ?? "",
                     'j_address' => $mustData['j_address'],
                     'j_post_code' => $mustData['j_post_code'],
                     'd_contact' => $mustData['d_contact'],
                     'd_tel' => $mustData['d_tel'],
                     'd_deliverycode' => $mustData['d_deliverycode'],
-                    'd_company' => $extData['d_company']??'顺丰速运',
-                    'd_country' => $extData['d_country']??'',
-                    'd_province' => $extData['d_province']??'',
-                    'd_city' => $extData['d_city']??'',
-                    'd_county' => $extData['d_county']??'',
+                    'd_company' => $extData['d_company'] ?? '顺丰速运',
+                    'd_country' => $extData['d_country'] ?? '',
+                    'd_province' => $extData['d_province'] ?? '',
+                    'd_city' => $extData['d_city'] ?? '',
+                    'd_county' => $extData['d_county'] ?? '',
                     'd_address' => $mustData['d_address'],
                     'd_post_code' => $mustData['d_post_code'],
                     'custid' => $this->cusTid,
-                    'pay_method' => $mustData['pay_method']??'1',
-                    'express_type' => $extData['express_type']??'1',
-                    'remark' => $extData['remark']??"",
+                    'pay_method' => $mustData['pay_method'] ?? '1',
+                    'express_type' => $extData['express_type'] ?? '1',
+                    'remark' => $extData['remark'] ?? "",
                 ],
                 'body' => [
                     'Cargo' => [
@@ -395,28 +394,28 @@ class Qiao
         ];
         foreach ($mustData['products'] as $v) {
             $data['Order']['body']['Cargo']['attributes'][] = [
-                'name' => $v['name']??'',
-                'count' => $v['count']??'',
-                'unit' => $v['unit']??'',
-                'weight' => $v['weight']??'',
-                'amount' => $v['amount']??'',
-                'currency' => $v['currency']??'',
-                'currency' => $v['currency']??'',
-                'source_area' => $v['source_area']??'',
+                'name' => $v['name'] ?? '',
+                'count' => $v['count'] ?? '',
+                'unit' => $v['unit'] ?? '',
+                'weight' => $v['weight'] ?? '',
+                'amount' => $v['amount'] ?? '',
+                'currency' => $v['currency'] ?? '',
+                'currency' => $v['currency'] ?? '',
+                'source_area' => $v['source_area'] ?? '',
             ];
         }
         $this->setServiceName($serviceName)->setData($data)->request();
         $result = $this->getResult(true);
         if ($result['state']) {
-            $data = $result['data']['OrderResponse']['@attributes']+['rls_info' => $result['data']['OrderResponse']['rls_info']['@attributes']+['rls_detail' =>$result['data']['OrderResponse']['rls_info']['rls_detail']['@attributes']]];
+            $data = $result['data']['OrderResponse']['@attributes'] + ['rls_info' => $result['data']['OrderResponse']['rls_info']['@attributes'] + ['rls_detail' => $result['data']['OrderResponse']['rls_info']['rls_detail']['@attributes']]];
             return ['state' => true, 'msg' => '', 'data' => $data];
         } else {
-            return ['state' => false,'msg' => $result['msg']];
+            return ['state' => false, 'msg' => $result['msg']];
         }
     }
 
     // 订单取消
-    public function quickOrderCancel(string $orderId, ?string $serviceName = 'OrderConfirmService'):array
+    public function quickOrderCancel(string $orderId, ?string $serviceName = 'OrderConfirmService'): array
     {
         if (!$orderId) $this->exception('the orderId is empty');
         $data = [
@@ -444,4 +443,106 @@ class Qiao
         }
     }
 
+    // 订单确认
+    public function quickOrderConfirm(string $orderId, ?array $extData = null, ?string $serviceName = 'OrderConfirmService'): array
+    {
+        if (!$orderId) $this->exception('the orderId is empty');
+        $data = [
+            'OrderConfirm' => [
+                'attributes' => [
+                    'orderid' => $orderId,
+                    'dealtype' => '1',
+//                    "customs_batchs" => $extData['customs_batchs']??"",
+//                    "agent_no" => $extData['agent_no']??"",
+//                    "consign_emp_code" => $extData['consign_emp_code']??"",
+//                    "source_zone_code" => $extData['source_zone_code']??"",
+//                    "in_process_waybill_no" => $extData['in_process_waybill_no']??"",
+                ],
+                'body' => [
+//                    "OrderConfirmOption" => [
+//                        "attributes" => [
+//                            "weight" => $extData['weight']??"",
+//                            "volume" => $extData['volume']??"",
+//                            "return_tracking" => $extData['return_tracking']??"",
+//                            "express_type" => $extData['express_type']??"",
+//                            "children_nos" => $extData['children_nos']??"",
+//                            "waybill_size" => $extData['waybill_size']??"",
+//                            "is_gen_eletric_pic" => $extData['is_gen_eletric_pic']??"",
+//                        ]
+//                    ]
+                ]
+            ]
+        ];
+        $this->setServiceName($serviceName)->setData($data)->request();
+        $result = $this->getResult(false);
+        if ($result['result']['state']) {
+            $resStatus = $result['result']['data']['OrderConfirmResponse']['@attributes']['res_status'];
+            if ($resStatus == 1) {
+                return ['state' => false, 'msg' => '客户订单号与顺丰运单不匹配'];
+            } else if ($resStatus == 2) {
+                return ['state' => true, 'msg' => ''];
+            } else {
+                return ['state' => false, 'msg' => '未知错误'];
+            }
+        } else {
+            return ['state' => false, 'msg' => $result['result']['msg'], 'data' => $result['result']['data']];
+        }
+    }
+
+    // 子单号申请 OrderZDService
+    public function quickGetSubOrderNo(string $orderId, int $parcelQuantity = 1, string $serviceName = 'OrderZDService'): array
+    {
+        if (!$orderId) $this->exception('the orderId is empty');
+        $data = [
+            'OrderZD' => [
+                'attributes' => [
+                    'orderid' => $orderId,
+                    'parcel_quantity' => (string)$parcelQuantity
+                ],
+                'body' => null
+            ]
+        ];
+        $this->setServiceName($serviceName)->setData($data)->request();
+        $result = $this->getResult(true);
+        if ($result['state']) {
+            return ['state' => true, 'msg' => '', 'data' => $result['data']['OrderZDResponse']['OrderZDResponse']['@attributes']];
+        } else {
+            return ['state' => false, 'msg' => $result['msg']];
+        }
+    }
+
+    // 推送订单状态
+    public function quickPushOrderState(array $mustData, ?array $extData = null, string $serviceName = 'OrderService'):array
+    {
+        $mustDataIdx = [
+            'orderNo', 'orderStateCode', 'orderStateDesc', 'carrierCode'
+        ];
+        foreach ($mustDataIdx as $v) {
+            if (!isset($mustData[$v]) || !$mustData[$v]) {
+                $this->exception("the {$v} is empty");
+            }
+        }
+
+        $data = [
+            'orderNo' => $mustData['orderNo'],
+            'waybillNo' => $extData['orderNo']??"",
+            'orderStateCode' => $mustData['orderStateCode'],
+            'orderStateDesc' => $mustData['orderStateDesc'],
+            'empCode' => $extData['empCode']??"",
+            'empPhone' => $extData['empPhone']??"",
+            'netCode' => $extData['netCode']??"",
+            'lastTime' => $extData['lastTime']??"",
+            'bookTime' => $extData['bookTime']??"",
+            'carrierCode' => $mustData['carrierCode']??""
+        ];
+
+        $this->setServiceName($serviceName)->setData($data)->request();
+        $result = $this->getResult(true);
+        if ($result['state']) {
+            $data = $result['data']['OrderResponse']['@attributes'] + ['rls_info' => $result['data']['OrderResponse']['rls_info']['@attributes'] + ['rls_detail' => $result['data']['OrderResponse']['rls_info']['rls_detail']['@attributes']]];
+            return ['state' => true, 'msg' => '', 'data' => $data];
+        } else {
+            return ['state' => false, 'msg' => $result['msg']];
+        }
+    }
 }

@@ -11,12 +11,12 @@ use SFQiao\Qiao;
 $conf = [
     'customer_code' => 'QC_jMKZZ',
     'check_word' => 'vghrEqtPOygkH8x47lFXSVoyHVvU5OBx',
-    'cus_tid' => '7551234567‬'
+    'cus_tid' => '7551234567'
 ];
 // 7551234567‬
 $result = false;
 $qiao = new Qiao($conf);
-//$result = $qiao->quickRouteRequest('SF7444404156506');
+//$result = $qiao->quickRouteRequest("SF7444404768289");
 /**
 <?xml version='1.0' encoding='UTF-8'?>
 <Response service="RouteService">
@@ -29,7 +29,9 @@ $qiao = new Qiao($conf);
 </Body>
 </Response>
  */
-//$result = $qiao->quickOrderSearch('T00000001');
+//$result = $qiao->quickOrderSearch('T00000003');
+//var_dump($result);
+//die();
 /**
 <?xml version='1.0' encoding='UTF-8'?>
 <Response service="OrderSearchService">
@@ -58,10 +60,15 @@ $qiao = new Qiao($conf);
  */
 
 $mustData = [
-    'orderid' => 'T00000004',
-    'j_contact' => 'speauty',
-    'j_tel' => '15555555555',
+    'orderid' => 'h4343143123',
+    'j_contact' => 'fafdafsd',
+    'j_tel' => '15505555525',
     'j_address' => '广东省深圳市福田区新洲十一街万基商务大厦10楼',
+    'j_shippercode' => '0000000',
+    'j_post_code' => '0000000',
+    'd_deliverycode' => '0000000',
+    'd_post_code' => '0000000',
+    'pay_method' => '1',
     'd_contact' => 'hs',
     'd_tel' => '15555555555',
     'd_address' => '广东省深圳市福田区新洲十一街万基商务大厦10楼',
@@ -74,28 +81,25 @@ $mustData = [
 //
 $extDat = [];
 //$result = $qiao->quickOrderMainland($mustData, $extDat);
-/**
-<?xml version='1.0' encoding='UTF-8'?>
-<Response service="OrderService">
-<Head>OK</Head>
-<Body>
-<OrderResponse filter_result="2" destcode="755" mailno="SF7444404156506" origincode="755" orderid="T00000001">
-<rls_info rls_errormsg="SF7444404156506:" invoke_result="OK" rls_code="1000">
-<rls_detail waybillNo="SF7444404156506" sourceCityCode="755" destCityCode="755" destDeptCode="755BF" destTeamCode="018" destTransferCode="755W" destRouteLabel="755W-755BF" proName="顺丰标快" cargoTypeCode="C201" limitTypeCode="T4" expressTypeCode="B1" codingMapping="D18" xbFlag="0" printFlag="000000000" twoDimensionCode="MMM={'k1':'755W','k2':'755BF','k3':'018','k4':'T4','k5':'SF7444404156506','k6':'','k7':'39bb4bd9'}" proCode="T4" printIcon="00000000" checkCode="39bb4bd9" destGisDeptCode="755BF"/>
-</rls_info>
-</OrderResponse>
-</Body>
-</Response>
- */
-//$result = $qiao->quickOrderCancel('T00000003');
-/**
-<?xml version='1.0' encoding='UTF-8'?>
-<Response service="OrderConfirmService">
-<Head>OK</Head>
-<Body>
-<OrderConfirmResponse res_status="2" orderid="T00000001"/>
-</Body>
-</Response>
- */
-$result = $qiao->quickOrderCrossBorder($mustData, $extDat);
+//var_dump($result);
+//die();
+//$result = $qiao->quickOrderCrossBorder($mustData, $extDat);
+$extDat = [
+
+];
+//$result = $qiao->quickOrderConfirm('g53425245245234', $extDat);
+//$result = $qiao->quickGetSubOrderNo('g53425245245234', 5);
+$result = $qiao->quickPushOrderState([
+    'orderNo' => 'h4343143123',
+    'orderStateCode' => '40001',
+    'orderStateDesc' => '调度成功,收派员信息',
+    'carrierCode' => 'SF'
+], [
+    'waybillNo' => "SF7444404769390",
+    'empCode' => "845215",
+    'empPhone' => "13888888888",
+    'netCode' => "755A",
+    'lastTime' => "2018-04-16 15:23:24",
+    'bookTime' => "2018-04-16 15:23:24"
+]);
 var_dump($result);
