@@ -18,7 +18,9 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "SFQiao\\": "src/"
+            "SFQiao\\": "src/",
+            "SFQiao\\Lib\\": "src/lib/",
+            "SFQiao\\Lib\\Exception\\": "src/lib/exception"
         }
     }
 }

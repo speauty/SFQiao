@@ -7,12 +7,23 @@
  */
 require_once __DIR__.'/../vendor/autoload.php';
 use SFQiao\Qiao;
+use SFQiao\Lib\Conf;
 
 $conf = [
     'customer_code' => 'QC_jMKZZ',
     'check_word' => 'vghrEqtPOygkH8x47lFXSVoyHVvU5OBx',
     'cus_tid' => '7551234567'
 ];
+$conf = (new Conf())->setConfMulti([
+    'customerCode' => 'QC_jMKZZ',
+    'checkWord' => 'vghrEqtPOygkH8x47lFXSVoyHVvU5OBx',
+    'cusTid' => '7551234567'
+]);
+$data = (new \SFQiao\Lib\data\Data_OSS());
+$data->orderId = 'T00000001';
+$app = new \SFQiao\QiaoT();
+$app->setConf($conf)->quickOrderSearch($data);
+die();
 // 7551234567‬
 $result = false;
 $qiao = new Qiao($conf);
