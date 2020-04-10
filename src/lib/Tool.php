@@ -6,12 +6,12 @@
  * Created: 2020-04-09 02:06:29
  */
 declare(strict_types=1);
-namespace SFQiao\lib;
+namespace SFQiao\Lib;
 
 
 /**
  * Class Tool
- * @package SFQiao\lib
+ * @package SFQiao\Lib
  */
 class Tool
 {
@@ -82,5 +82,15 @@ class Tool
     {
         libxml_disable_entity_loader(true);
         return json_decode(json_encode(simplexml_load_string($xmlStr, 'SimpleXMLElement', LIBXML_NOCDATA)), true)?:null;
+    }
+
+    static public function getRealName(string $keyName):string
+    {
+        return ConstSets::MAP_SPECIAL_FIELDS[$keyName]??self::smallCamel2Snake($keyName);
+    }
+
+    static public function smallCamel2Snake(string $str):string
+    {
+        return strtolower(preg_replace('/(?<=[a-z])([A-Z])/', '_$1', $str));
     }
 }

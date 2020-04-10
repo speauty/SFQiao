@@ -6,15 +6,15 @@
  * Created: 2020-04-09 00:35:23
  */
 declare(strict_types=1);
-namespace SFQiao\lib\exception;
+namespace SFQiao\Lib\Exception;
 use Throwable;
 use \Exception;
 
 /**
- * Class Qexception
- * @package SFQiao\lib\exception
+ * Class QException
+ * @package SFQiao\Lib\Exception
  */
-class Qexception extends Exception
+class QException extends Exception
 {
     private $tagPrefix = 'SFQiao';
 

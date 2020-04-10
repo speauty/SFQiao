@@ -7,13 +7,13 @@
  */
 declare(strict_types=1);
 
-namespace SFQiao\lib\traits;
+namespace SFQiao\Lib\Traits;
 use SFQiao\Result;
 
 
 /**
  * Trait TraitResult
- * @package SFQiao\lib\traits
+ * @package SFQiao\Lib\Traits
  */
 trait TraitResult
 {

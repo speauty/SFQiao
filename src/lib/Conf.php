@@ -6,13 +6,13 @@
  * Created: 2020-04-09 00:42:09
  */
 declare(strict_types=1);
-namespace SFQiao\lib;
+namespace SFQiao\Lib;
 
-use SFQiao\lib\exception\Qexception;
+use SFQiao\Lib\Exception\QException;
 
 /**
  * Class Conf
- * @package SFQiao\lib
+ * @package SFQiao\Lib
  */
 class Conf
 {
@@ -34,9 +34,9 @@ class Conf
     public function validate():void
     {
         $properties = get_object_vars($this);
-        if (!$properties) throw New Qexception("the conf property not set.");
+        if (!$properties) throw New QException("the conf property not set.");
         foreach ($properties as $k => $v) {
-            if (!$v) throw New Qexception("the conf property {$k} is empty.");
+            if (!$v) throw New QException("the conf property {$k} is empty.");
         }
     }
 }

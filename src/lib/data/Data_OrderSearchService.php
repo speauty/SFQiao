@@ -2,20 +2,22 @@
 /**
  * Author:  Speauty
  * Email:   speauty@163.com
- * File:    Data_OSS.php
+ * File:    Data_OrderSearchService.php
  * Created: 2020-04-09 01:28:15
  */
 declare(strict_types=1);
 
-namespace SFQiao\lib\data;
+namespace SFQiao\Lib\Data;
 
 
 /**
  * Class Data_OSS 订单结果查询服务数据模型
- * @package SFQiao\lib\data
+ * @package SFQiao\Lib\Data
  */
-class Data_OSS extends Data
+class Data_OrderSearchService extends Data
 {
+    /** @var string 服务映射键名 */
+    protected $serviceNameMapKey = 'OrderSearchService';
     /** @var string 客户订单号 */
     public $orderId = "";
     /**
@@ -24,19 +26,10 @@ class Data_OSS extends Data
      * 2. 退货单查询, 传入的orderid为退货原始订单号
      */
     public $searchType = "1";
-    /** @var string 键名 */
-    public $serviceNameMapKey = 'OSS';
 
     public function getData():?array
     {
-        return [
-            'OrderSearch' => [
-                'attributes' => [
-                    'orderid' => $this->orderId,
-                    'search_type' => $this->searchType
-                ],
-                'body' => null
-            ]
-        ];
+        $result = $this->loadPublicParams($this);
+        return $result;
     }
 }

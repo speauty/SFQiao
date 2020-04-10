@@ -8,9 +8,13 @@
 declare(strict_types=1);
 namespace SFQiao;
 use \GuzzleHttp\Psr7\Response;
-use SFQiao\lib\Tool;
+use SFQiao\Lib\Tool;
 
 
+/**
+ * Class Result
+ * @package SFQiao
+ */
 class Result
 {
     private $result = [
