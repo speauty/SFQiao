@@ -82,6 +82,7 @@ class SFQiaoSDK
     }
 
     /**
+     * 快递路由查询
      * @param Lib\Data\Data_RouteService $data
      * @param bool $resultWithInitInfo
      * @return array|null
@@ -102,6 +103,7 @@ class SFQiaoSDK
     }
 
     /**
+     * 筛选订单
      * @param Lib\Data\Data_OrderFilterService $data
      * @param bool $resultWithInitInfo
      * @return array|null
@@ -122,6 +124,7 @@ class SFQiaoSDK
     }
 
     /**
+     * 生成子单号
      * @param Lib\Data\Data_OrderZDService $data
      * @param bool $resultWithInitInfo
      * @return array|null
@@ -142,6 +145,7 @@ class SFQiaoSDK
     }
 
     /**
+     * 确认或取消订单
      * @param Lib\Data\Data_OrderConfirmService $data
      * @param bool $resultWithInitInfo
      * @return array|null
@@ -162,6 +166,7 @@ class SFQiaoSDK
     }
 
     /**
+     * 下单
      * @param Lib\Data\Data_OrderService $data
      * @param bool $resultWithInitInfo
      * @return array|null
@@ -177,6 +182,25 @@ class SFQiaoSDK
             isset($result['data']['OrderResponse']['@attributes']) && $result['data']['OrderResponse']['@attributes']
         ) {
             $result['data'] = $result['data']['OrderResponse']['@attributes'];
+        }
+        return $result;
+    }
+
+    /**
+     * 下单(国际件)
+     * @param Lib\Data\Data_OrderServiceCrossBorder $data
+     * @param bool $resultWithInitInfo
+     * @return array|null
+     * @throws Lib\Exception\QException
+     */
+    public function quickOrderCrossBorder(\SFQiao\Lib\Data\Data_OrderServiceCrossBorder $data, bool $resultWithInitInfo = false):?array
+    {
+        $this->preRequestProcess($data);
+        $result = $this->result()->getResult($resultWithInitInfo);
+        if (
+            isset($result['data']) && $result['data']
+        ) {
+            $result['data'] = $result['data'];
         }
         return $result;
     }
