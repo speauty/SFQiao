@@ -177,11 +177,18 @@ class SFQiaoSDK
         $this->preRequestProcess($data);
         $result = $this->result()->getResult($resultWithInitInfo);
         if (
-            isset($result['data']) && $result['data'] &&
-            isset($result['data']['OrderResponse']) && $result['data']['OrderResponse'] &&
-            isset($result['data']['OrderResponse']['@attributes']) && $result['data']['OrderResponse']['@attributes']
+            isset($result['data']) &&
+            $result['data'] &&
+            isset($result['data']['OrderResponse']) &&
+            $result['data']['OrderResponse'] &&
+            isset($result['data']['OrderResponse']['rls_info']) &&
+            $result['data']['OrderResponse']['rls_info'] &&
+            isset($result['data']['OrderResponse']['rls_info']['rls_detail']) &&
+            $result['data']['OrderResponse']['rls_info']['rls_detail'] &&
+            isset($result['data']['OrderResponse']['rls_info']['rls_detail']['@attributes']) &&
+            $result['data']['OrderResponse']['rls_info']['rls_detail']['@attributes']
         ) {
-            $result['data'] = $result['data']['OrderResponse']['@attributes'];
+            $result['data'] = $result['data']['OrderResponse']['rls_info']['rls_detail']['@attributes'];
         }
         return $result;
     }
